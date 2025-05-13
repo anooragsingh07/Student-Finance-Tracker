@@ -16,6 +16,7 @@ let categories = {
     ]
 };
 let currentCurrency = localStorage.getItem('currency') || 'USD';
+let currentTheme = localStorage.getItem('theme') || 'light';
 let exchangeRates = {};
 
 // Budget limits for different categories (in USD)
@@ -47,6 +48,8 @@ const currencySelect = document.getElementById('currency');
 const currentDateElement = document.getElementById('current-date');
 const searchTransactionsInput = document.getElementById('search-transactions');
 const filterCategorySelect = document.getElementById('filter-category');
+const themeToggle = document.getElementById('theme-toggle');
+const themeIcon = themeToggle.querySelector('i');
 
 // Initialize the application
 function init() {
@@ -457,12 +460,58 @@ function changeCurrency() {
     }
 }
 
+// Initialize theme
+function initTheme() {
+    try {
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        updateThemeIcon();
+    } catch (error) {
+        console.error('Error initializing theme:', error);
+    }
+}
+
+// Update theme icon
+function updateThemeIcon() {
+    try {
+        if (currentTheme === 'dark') {
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        } else {
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+        }
+    } catch (error) {
+        console.error('Error updating theme icon:', error);
+    }
+}
+
+// Toggle theme
+function toggleTheme() {
+    try {
+        currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+        localStorage.setItem('theme', currentTheme);
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        updateThemeIcon();
+        
+        // Update charts if they exist
+        if (typeof updateCharts === 'function') {
+            updateCharts();
+        }
+    } catch (error) {
+        console.error('Error toggling theme:', error);
+    }
+}
+
 // Event Listeners
 transactionTypeSelect.addEventListener('change', updateCategoryOptions);
 transactionForm.addEventListener('submit', addTransaction);
 currencySelect.addEventListener('change', changeCurrency);
 searchTransactionsInput.addEventListener('input', renderTransactions);
 filterCategorySelect.addEventListener('change', renderTransactions);
+themeToggle.addEventListener('click', toggleTheme);
 
 // Initialize the application when the DOM is loaded
-document.addEventListener('DOMContentLoaded', init); 
+document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
+    init();
+}); 
