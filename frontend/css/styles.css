@@ -11,14 +11,17 @@
     --dark-color: #343a40;
     --gray-color: #6c757d;
     --bg-color: #f5f7fa;
-    --card-bg: #ffffff;
+    --card-bg: rgba(255, 255, 255, 0.9);
     --text-color: #343a40;
-    --border-color: #e0e0e0;
-    --hover-bg: #f8f9fa;
+    --border-color: rgba(224, 224, 224, 0.8);
+    --hover-bg: rgba(248, 249, 250, 0.9);
     --shadow-color: rgba(0, 0, 0, 0.1);
     --border-radius: 8px;
     --box-shadow: 0 4px 6px var(--shadow-color);
     --transition: all 0.3s ease;
+    --gradient-1: #4a6fa5;
+    --gradient-2: #166088;
+    --gradient-3: #4fc3f7;
 }
 
 /* Dark Theme */
@@ -33,11 +36,14 @@
     --dark-color: #e0e0e0;
     --gray-color: #9e9e9e;
     --bg-color: #121212;
-    --card-bg: #1e1e1e;
+    --card-bg: rgba(30, 30, 30, 0.9);
     --text-color: #e0e0e0;
-    --border-color: #333333;
-    --hover-bg: #2d2d2d;
+    --border-color: rgba(51, 51, 51, 0.8);
+    --hover-bg: rgba(45, 45, 45, 0.9);
     --shadow-color: rgba(0, 0, 0, 0.3);
+    --gradient-1: #1a237e;
+    --gradient-2: #0d47a1;
+    --gradient-3: #01579b;
 }
 
 /* Global Styles */
@@ -51,14 +57,40 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
     color: var(--text-color);
-    background-color: var(--bg-color);
+    background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2), var(--gradient-3));
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    min-height: 100vh;
     transition: var(--transition);
+}
+
+@keyframes gradientBG {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Glass Effect for Cards */
+.card, .chart-card, .prediction-section, .transaction-form, .transactions-list {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--box-shadow);
 }
 
 /* Header Styles */
@@ -69,7 +101,9 @@ header {
     padding: 20px 0;
     margin-bottom: 30px;
     border-bottom: 1px solid var(--border-color);
-    background-color: var(--card-bg);
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-radius: var(--border-radius);
     padding: 20px;
     box-shadow: var(--box-shadow);
@@ -467,9 +501,11 @@ footer {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
     border-radius: 50%;
     width: 50px;
     height: 50px;
@@ -484,7 +520,7 @@ footer {
 
 .theme-toggle:hover {
     transform: scale(1.1);
-    background-color: var(--secondary-color);
+    background: var(--hover-bg);
 }
 
 .theme-toggle i {
